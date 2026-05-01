@@ -27,16 +27,35 @@ jobs:
           cache-dependency-path: apps/desktop/pnpm-lock.yaml
 
       - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
 
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: apps/desktop/src-tauri -> target
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install JS deps
+        run: pnpm install --frozen-lockfile
 
-      - run: pnpm build
+      - name: Prettier (format check)
+        run: pnpm format:check
 
-      - run: cargo check
+      - name: ESLint
+        run: pnpm lint
+
+      - name: TypeScript + Vite build
+        run: pnpm build
+
+      - name: Cargo fmt
+        run: cargo fmt --check
+        working-directory: apps/desktop/src-tauri
+
+      - name: Clippy (warnings as errors)
+        run: cargo clippy --all-targets -- -D warnings
+        working-directory: apps/desktop/src-tauri
+
+      - name: Cargo check
+        run: cargo check --all-targets
         working-directory: apps/desktop/src-tauri
 
   backend:
@@ -58,6 +77,12 @@ jobs:
 
       - run: uv sync --all-extras
 
+      - name: Ruff (lint)
+        run: uv run ruff check .
+
+      - name: Ruff (format check)
+        run: uv run ruff format --check .
+
       - name: Syntax check
         run: |
           uv run python -m py_compile \
@@ -69,7 +94,3 @@ jobs:
             clawless_backend/daily.py \
             clawless_backend/rename.py \
             clawless_backend/archive.py
-
-      - name: Lint
-        run: uv run ruff check .
-        continue-on-error: true

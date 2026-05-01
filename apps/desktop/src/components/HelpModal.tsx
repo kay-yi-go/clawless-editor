@@ -37,10 +37,7 @@ export default function HelpModal({ bindings, onClose }: Props) {
 
   return (
     <div className="modal-overlay" onClick={onClose} onKeyDown={onKeyDown}>
-      <div
-        className="modal help-modal"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="modal help-modal" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
           <h2>Keyboard shortcuts</h2>
           <button className="modal-close" onClick={onClose} aria-label="Close">

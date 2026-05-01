@@ -121,9 +121,7 @@ export default function PaneStack({ panes, storageKey, defaultOrder }: Props) {
         return (
           <div
             key={s.id}
-            className={
-              "pane-cell" + (dragOverId === s.id ? " drag-over" : "")
-            }
+            className={"pane-cell" + (dragOverId === s.id ? " drag-over" : "")}
             style={heightStyle}
             onDragOver={(e) => {
               e.preventDefault();

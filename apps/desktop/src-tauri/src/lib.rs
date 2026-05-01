@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 use tauri::menu::{MenuBuilder, MenuItemBuilder};
 use tauri::tray::TrayIconBuilder;
 use tauri::{AppHandle, Emitter, Manager, State, WindowEvent};
-use tauri_plugin_autostart::{ManagerExt, MacosLauncher};
+use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 use tauri_plugin_notification::NotificationExt;
 use walkdir::WalkDir;
 
@@ -20,8 +20,8 @@ use crate::git::{full_sync, SyncReport, SyncState};
 const DEFAULT_SYNC_INTERVAL_SECS: u64 = 30 * 60;
 
 const VAULT_PALETTE: &[&str] = &[
-    "#FF66B3", "#6A5ACD", "#1E90FF", "#FFCEE3", "#BFB6E8", "#B3D7FF",
-    "#22C55E", "#F59E0B", "#EC4899", "#06B6D4",
+    "#FF66B3", "#6A5ACD", "#1E90FF", "#FFCEE3", "#BFB6E8", "#B3D7FF", "#22C55E", "#F59E0B",
+    "#EC4899", "#06B6D4",
 ];
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -112,7 +112,10 @@ impl Default for AppConfig {
 impl AppConfig {
     fn active_vault_path(&self) -> Option<PathBuf> {
         let id = self.active_vault_id.as_ref()?;
-        self.vaults.iter().find(|v| &v.id == id).map(|v| v.path.clone())
+        self.vaults
+            .iter()
+            .find(|v| &v.id == id)
+            .map(|v| v.path.clone())
     }
 
     fn active_vault(&self) -> Option<&Vault> {
@@ -120,6 +123,7 @@ impl AppConfig {
         self.vaults.iter().find(|v| &v.id == id)
     }
 
+    #[allow(dead_code)]
     fn active_vault_mut(&mut self) -> Option<&mut Vault> {
         let id = self.active_vault_id.clone()?;
         self.vaults.iter_mut().find(|v| v.id == id)
@@ -343,11 +347,7 @@ fn add_vault(
 }
 
 #[tauri::command]
-fn remove_vault(
-    id: String,
-    state: State<'_, ConfigState>,
-    app: AppHandle,
-) -> Result<(), String> {
+fn remove_vault(id: String, state: State<'_, ConfigState>, app: AppHandle) -> Result<(), String> {
     let mut cfg = state.0.lock().unwrap();
     cfg.vaults.retain(|v| v.id != id);
     if cfg.active_vault_id.as_deref() == Some(id.as_str()) {
@@ -380,7 +380,11 @@ fn update_vault(
         vault.path = strip_unc_prefix(canon);
     }
     if let Some(remote) = patch.github_remote {
-        vault.github_remote = if remote.is_empty() { None } else { Some(remote) };
+        vault.github_remote = if remote.is_empty() {
+            None
+        } else {
+            Some(remote)
+        };
     }
     if let Some(pat) = patch.github_pat {
         vault.github_pat = if pat.is_empty() { None } else { Some(pat) };
@@ -522,10 +526,9 @@ fn run_sync_and_emit(app: &AppHandle, vault: &Path) -> SyncReport {
         let tooltip = match report.state {
             SyncState::Idle => "Clawless — synced".to_string(),
             SyncState::Syncing => "Clawless — syncing…".to_string(),
-            SyncState::Conflict => format!(
-                "Clawless — {} conflict(s)",
-                report.conflict_files.len()
-            ),
+            SyncState::Conflict => {
+                format!("Clawless — {} conflict(s)", report.conflict_files.len())
+            }
             SyncState::Error => "Clawless — sync error".to_string(),
             SyncState::Disconnected => "Clawless — no remote".to_string(),
         };
@@ -631,10 +634,7 @@ fn get_bookmarks(state: State<'_, ConfigState>) -> Vec<String> {
 }
 
 #[tauri::command]
-fn set_bookmarks(
-    bookmarks: Vec<String>,
-    state: State<'_, ConfigState>,
-) -> Result<(), String> {
+fn set_bookmarks(bookmarks: Vec<String>, state: State<'_, ConfigState>) -> Result<(), String> {
     let json = serde_json::to_string_pretty(&bookmarks).map_err(|e| e.to_string())?;
     write_meta_file(&state, "bookmarks.json", &json)
 }
@@ -747,10 +747,7 @@ fn vault_meta_path(state: &State<'_, ConfigState>, name: &str) -> Result<PathBuf
 }
 
 #[tauri::command]
-fn read_vault_meta(
-    name: String,
-    state: State<'_, ConfigState>,
-) -> Result<Option<String>, String> {
+fn read_vault_meta(name: String, state: State<'_, ConfigState>) -> Result<Option<String>, String> {
     let path = vault_meta_path(&state, &name)?;
     match fs::read_to_string(&path) {
         Ok(s) => Ok(Some(s)),
@@ -772,10 +769,7 @@ fn write_vault_meta(
 }
 
 #[tauri::command]
-fn grep_vault(
-    query: String,
-    state: State<'_, ConfigState>,
-) -> Result<Vec<String>, String> {
+fn grep_vault(query: String, state: State<'_, ConfigState>) -> Result<Vec<String>, String> {
     let root = state
         .0
         .lock()
@@ -829,10 +823,7 @@ fn rename_vault_file(
 }
 
 #[tauri::command]
-fn delete_vault_file(
-    rel_path: String,
-    state: State<'_, ConfigState>,
-) -> Result<(), String> {
+fn delete_vault_file(rel_path: String, state: State<'_, ConfigState>) -> Result<(), String> {
     let path = resolve_active_path(&state, &rel_path)?;
     fs::remove_file(&path).map_err(|e| e.to_string())
 }
@@ -902,10 +893,8 @@ fn spawn_rename_watchdog(app: AppHandle, vault: PathBuf) {
         loop {
             match rx.recv_timeout(Duration::from_secs(10)) {
                 Ok(Ok(event)) => {
-                    let interesting = matches!(
-                        event.kind,
-                        EventKind::Create(_) | EventKind::Modify(_)
-                    );
+                    let interesting =
+                        matches!(event.kind, EventKind::Create(_) | EventKind::Modify(_));
                     if !interesting {
                         continue;
                     }
@@ -968,9 +957,13 @@ fn show_main_window(app: &AppHandle) {
 }
 
 fn build_tray(app: &AppHandle) -> tauri::Result<()> {
-    let open_item = MenuItemBuilder::new("Open Clawless").id("open").build(app)?;
+    let open_item = MenuItemBuilder::new("Open Clawless")
+        .id("open")
+        .build(app)?;
     let sync_item = MenuItemBuilder::new("Sync now").id("sync_now").build(app)?;
-    let daily_item = MenuItemBuilder::new("New daily log").id("daily").build(app)?;
+    let daily_item = MenuItemBuilder::new("New daily log")
+        .id("daily")
+        .build(app)?;
     let archive_item = MenuItemBuilder::new("Run auto-archive")
         .id("archive")
         .build(app)?;
@@ -1036,7 +1029,7 @@ pub fn run() {
             }
         })
         .setup(|app| {
-            let cfg = load_config(&app.handle());
+            let cfg = load_config(app.handle());
             let active_path = cfg.active_vault_path();
             let interval = Duration::from_secs(cfg.sync_interval_seconds);
             let sync_enabled = cfg.sync_enabled;

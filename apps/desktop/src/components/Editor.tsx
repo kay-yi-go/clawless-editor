@@ -43,7 +43,8 @@ export default function Editor({ initialDoc, visible, onChange }: Props) {
             },
           ]),
           EditorView.updateListener.of((u) => {
-            if (u.docChanged) callbacks.current.onChange?.(u.state.doc.toString());
+            if (u.docChanged)
+              callbacks.current.onChange?.(u.state.doc.toString());
           }),
         ],
       }),
@@ -62,9 +63,6 @@ export default function Editor({ initialDoc, visible, onChange }: Props) {
   }, [visible]);
 
   return (
-    <div
-      ref={hostRef}
-      className={"editor-host" + (visible ? "" : " hidden")}
-    />
+    <div ref={hostRef} className={"editor-host" + (visible ? "" : " hidden")} />
   );
 }

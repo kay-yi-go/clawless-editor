@@ -79,7 +79,10 @@ export async function readFile(relPath: string): Promise<string> {
   return invoke<string>("read_file", { relPath });
 }
 
-export async function writeFile(relPath: string, content: string): Promise<void> {
+export async function writeFile(
+  relPath: string,
+  content: string,
+): Promise<void> {
   await invoke("write_file", { relPath, content });
 }
 

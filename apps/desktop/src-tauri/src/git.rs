@@ -79,7 +79,10 @@ fn list_conflicts(repo: &Path) -> Vec<String> {
     let Ok(out) = run_git(repo, &["diff", "--name-only", "--diff-filter=U"]) else {
         return vec![];
     };
-    out.lines().map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).collect()
+    out.lines()
+        .map(|s| s.trim().to_string())
+        .filter(|s| !s.is_empty())
+        .collect()
 }
 
 fn has_uncommitted(repo: &Path) -> Result<bool, String> {
@@ -186,9 +189,7 @@ pub fn commit_and_push(repo: &Path) -> Result<SyncReport, String> {
 
 pub fn full_sync(repo: &Path) -> Result<SyncReport, String> {
     let pull_result = pull(repo)?;
-    if pull_result.state == SyncState::Conflict
-        || pull_result.state == SyncState::Disconnected
-    {
+    if pull_result.state == SyncState::Conflict || pull_result.state == SyncState::Disconnected {
         return Ok(pull_result);
     }
     commit_and_push(repo)

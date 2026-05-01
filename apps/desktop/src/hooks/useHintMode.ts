@@ -3,8 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const HINT_ALPHABET = "asdfghjkl;weruio".split("");
 
 const HINT_SELECTORS = [
-  'button:not([disabled])',
-  'a[href]',
+  "button:not([disabled])",
+  "a[href]",
   '[role="button"]',
   '[role="treeitem"]',
   '[role="tab"]',

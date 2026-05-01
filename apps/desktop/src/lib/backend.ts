@@ -9,7 +9,10 @@ export async function getBackendConfig(): Promise<BackendConfig> {
   return invoke<BackendConfig>("get_backend_config");
 }
 
-export async function setBackendConfig(url: string, key: string): Promise<void> {
+export async function setBackendConfig(
+  url: string,
+  key: string,
+): Promise<void> {
   await invoke("set_backend_config", { url, key });
 }
 

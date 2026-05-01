@@ -25,18 +25,16 @@ export default function WorkspaceTabs({
   const navRef = useRef<HTMLElement | null>(null);
 
   function focusButton(idx: number) {
-    const btns = navRef.current?.querySelectorAll<HTMLButtonElement>(
-      ".vault-avatar",
-    );
+    const btns =
+      navRef.current?.querySelectorAll<HTMLButtonElement>(".vault-avatar");
     if (!btns) return;
     const clamped = Math.max(0, Math.min(btns.length - 1, idx));
     btns[clamped]?.focus();
   }
 
   function onKeyDown(e: React.KeyboardEvent) {
-    const btns = navRef.current?.querySelectorAll<HTMLButtonElement>(
-      ".vault-avatar",
-    );
+    const btns =
+      navRef.current?.querySelectorAll<HTMLButtonElement>(".vault-avatar");
     if (!btns || btns.length === 0) return;
     const cur = Array.from(btns).indexOf(
       document.activeElement as HTMLButtonElement,

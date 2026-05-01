@@ -63,7 +63,14 @@ type ScratchTab = {
 
 type Tab = FileTab | ScratchTab;
 
-type Pane = "vault" | "recent" | "filter" | "tree" | "tabs" | "editor" | "search";
+type Pane =
+  | "vault"
+  | "recent"
+  | "filter"
+  | "tree"
+  | "tabs"
+  | "editor"
+  | "search";
 
 type FileMeta = { rel_path: string; last_modified: string };
 
@@ -104,9 +111,13 @@ function App() {
   const [pasteBuffer, setPasteBuffer] = useState<string | null>(null);
   const [sessionRestored, setSessionRestored] = useState(false);
   const [dirFilter, setDirFilter] = useState<DirFilter>({ kind: "all" });
-  const [defaultDirFilter, setDefaultDirFilter] = useState<DirFilter | null>(null);
+  const [defaultDirFilter, setDefaultDirFilter] = useState<DirFilter | null>(
+    null,
+  );
   const [expandedDirs, setExpandedDirs] = useState<Set<string>>(new Set());
-  const [contentMatches, setContentMatches] = useState<Set<string> | null>(null);
+  const [contentMatches, setContentMatches] = useState<Set<string> | null>(
+    null,
+  );
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const hint = useHintMode();
 
@@ -124,14 +135,20 @@ function App() {
   useEffect(() => {
     loadKeybindings().then(setBindings);
     if (activeVault) {
-      invoke<string[]>("get_bookmarks").then(setBookmarks).catch(() => setBookmarks([]));
+      invoke<string[]>("get_bookmarks")
+        .then(setBookmarks)
+        .catch(() => setBookmarks([]));
     }
   }, [activeVault?.id]);
 
   useEffect(() => {
     if (!activeVault) return;
-    listVault().then(setEntries).catch(() => setEntries([]));
-    invoke<FileMeta[]>("list_vault_meta").then(setMeta).catch(() => setMeta([]));
+    listVault()
+      .then(setEntries)
+      .catch(() => setEntries([]));
+    invoke<FileMeta[]>("list_vault_meta")
+      .then(setMeta)
+      .catch(() => setMeta([]));
   }, [activeVault?.id, treeRefresh]);
 
   useEffect(() => {
@@ -196,7 +213,9 @@ function App() {
         }
         setTabs(restored);
         if (session.active_tab_path) {
-          const match = restored.find((t) => t.relPath === session.active_tab_path);
+          const match = restored.find(
+            (t) => t.relPath === session.active_tab_path,
+          );
           setActiveId(match?.id ?? restored[0]?.id ?? null);
         } else {
           setActiveId(restored[0]?.id ?? null);
@@ -331,7 +350,10 @@ function App() {
           void openFile(f);
         }
         setTreeRefresh((n) => n + 1);
-      } else if (report.state === "idle" && report.message?.includes("pulled")) {
+      } else if (
+        report.state === "idle" &&
+        report.message?.includes("pulled")
+      ) {
         setTreeRefresh((n) => n + 1);
       }
     });
@@ -489,10 +511,14 @@ function App() {
 
   async function deleteFile(relPath: string) {
     if (!relPath) return;
-    const ok = window.confirm(`Delete ${relPath}? This cannot be undone outside git.`);
+    const ok = window.confirm(
+      `Delete ${relPath}? This cannot be undone outside git.`,
+    );
     if (!ok) return;
     await invoke("delete_vault_file", { relPath });
-    setTabs((prev) => prev.filter((t) => !(t.kind === "file" && t.relPath === relPath)));
+    setTabs((prev) =>
+      prev.filter((t) => !(t.kind === "file" && t.relPath === relPath)),
+    );
     setBookmarks((prev) => {
       const next = prev.filter((p) => p !== relPath);
       if (next.length !== prev.length) {
@@ -733,7 +759,15 @@ function App() {
       cmds[`tab.goto.${i}`] = () => gotoTab(i - 1);
     }
     return cmds;
-  }, [activeId, tabs, sidebarVisible, recentExpanded, recentFiles.length, focusedPane, hint]);
+  }, [
+    activeId,
+    tabs,
+    sidebarVisible,
+    recentExpanded,
+    recentFiles.length,
+    focusedPane,
+    hint,
+  ]);
 
   useKeybindings(bindings, commands);
 

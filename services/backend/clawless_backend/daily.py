@@ -38,7 +38,7 @@ def _split_sections(text: str, level: int) -> list[tuple[str, list[str]]]:
     sections: list[tuple[str, list[str]]] = [("", [])]
     for line in text.splitlines():
         if line.startswith(prefix):
-            sections.append((line[len(prefix):].strip(), []))
+            sections.append((line[len(prefix) :].strip(), []))
         else:
             sections[-1][1].append(line)
     return sections
@@ -118,4 +118,6 @@ def generate_daily(yesterday: str | None, today_date: str) -> str:
 
 @router.post("/daily-log", response_model=DailyLogOutput)
 async def daily_log(input: DailyLogInput) -> DailyLogOutput:
-    return DailyLogOutput(content=generate_daily(input.yesterday_content, input.today_date))
+    return DailyLogOutput(
+        content=generate_daily(input.yesterday_content, input.today_date)
+    )

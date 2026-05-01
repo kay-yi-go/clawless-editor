@@ -145,7 +145,9 @@ body,
   border-radius: 4px;
   padding: 0 6px;
   position: relative;
-  transition: box-shadow 0.15s, border-color 0.15s;
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s;
   align-self: stretch;
 }
 
@@ -195,7 +197,9 @@ body,
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
-  transition: filter 0.15s ease, transform 0.05s ease,
+  transition:
+    filter 0.15s ease,
+    transform 0.05s ease,
     box-shadow 0.15s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
@@ -232,7 +236,9 @@ body,
   font-size: 12px;
   font-weight: 500;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.15s ease, filter 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
 }
 
 .sync-indicator:hover {
@@ -305,7 +311,10 @@ body,
   align-items: center;
   justify-content: center;
   position: relative;
-  transition: border-radius 0.15s, box-shadow 0.15s, transform 0.05s;
+  transition:
+    border-radius 0.15s,
+    box-shadow 0.15s,
+    transform 0.05s;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
@@ -573,7 +582,9 @@ body,
   user-select: none;
   color: #888;
   border-radius: 8px 8px 0 0;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .tab:hover {
@@ -1032,7 +1043,9 @@ body,
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
-  transition: filter 0.15s ease, transform 0.05s ease,
+  transition:
+    filter 0.15s ease,
+    transform 0.05s ease,
     box-shadow 0.15s ease;
 }
 

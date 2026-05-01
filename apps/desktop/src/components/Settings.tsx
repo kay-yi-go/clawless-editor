@@ -54,7 +54,9 @@ export default function Settings({
   const [error, setError] = useState<string | null>(null);
 
   function reloadVaults() {
-    listVaults().then(setVaults).catch((e) => setError(String(e)));
+    listVaults()
+      .then(setVaults)
+      .catch((e) => setError(String(e)));
   }
 
   useEffect(() => {
@@ -174,7 +176,12 @@ export default function Settings({
   }
 
   async function onRemoveVault(id: string, name: string) {
-    if (!window.confirm(`Remove vault "${name}" from Clawless? Files on disk are not deleted.`)) return;
+    if (
+      !window.confirm(
+        `Remove vault "${name}" from Clawless? Files on disk are not deleted.`,
+      )
+    )
+      return;
     try {
       await removeVault(id);
       reloadVaults();
@@ -184,7 +191,10 @@ export default function Settings({
     }
   }
 
-  async function onUpdateVault(id: string, patch: Parameters<typeof updateVault>[1]) {
+  async function onUpdateVault(
+    id: string,
+    patch: Parameters<typeof updateVault>[1],
+  ) {
     try {
       await updateVault(id, patch);
       reloadVaults();
@@ -332,10 +342,7 @@ export default function Settings({
                 onChange={(e) =>
                   setTheme({
                     ...theme,
-                    colorScheme: e.target.value as
-                      | "light"
-                      | "dark"
-                      | "system",
+                    colorScheme: e.target.value as "light" | "dark" | "system",
                   })
                 }
               >
@@ -542,8 +549,7 @@ function ColorTriple(props: {
         <div
           key={i}
           className={
-            "theme-triple-cell" +
-            (props.dimmed?.[i] ? " is-auto" : "")
+            "theme-triple-cell" + (props.dimmed?.[i] ? " is-auto" : "")
           }
         >
           <label>
@@ -615,8 +621,15 @@ function VaultRow({ vault, onChange, onChangePath, onRemove }: VaultRowProps) {
   const [pat, setPat] = useState(vault.github_pat ?? "");
   const [expanded, setExpanded] = useState(false);
 
-  function commitField(field: "name" | "github_remote" | "github_pat", value: string) {
-    const patch: { name?: string; github_remote?: string; github_pat?: string } = {};
+  function commitField(
+    field: "name" | "github_remote" | "github_pat",
+    value: string,
+  ) {
+    const patch: {
+      name?: string;
+      github_remote?: string;
+      github_pat?: string;
+    } = {};
     patch[field] = value;
     onChange(patch);
   }
@@ -637,7 +650,9 @@ function VaultRow({ vault, onChange, onChangePath, onRemove }: VaultRowProps) {
         <button onClick={() => setExpanded((v) => !v)}>
           {expanded ? "▾" : "▸"}
         </button>
-        <button onClick={onRemove} aria-label="Remove">×</button>
+        <button onClick={onRemove} aria-label="Remove">
+          ×
+        </button>
       </div>
       {expanded && (
         <div className="vault-row-body">

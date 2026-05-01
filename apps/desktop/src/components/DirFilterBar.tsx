@@ -42,9 +42,7 @@ export default function DirFilterBar({
   onDefaultSaved,
 }: Props) {
   const [expanded, setExpanded] = useState(false);
-  const [customN, setCustomN] = useState(
-    filter.kind === "last" ? filter.n : 7,
-  );
+  const [customN, setCustomN] = useState(filter.kind === "last" ? filter.n : 7);
   const [customUnit, setCustomUnit] = useState<"day" | "month" | "year">(
     filter.kind === "last"
       ? filter.unit
@@ -116,10 +114,7 @@ export default function DirFilterBar({
         <span className="dir-filter-caret">{expanded ? "▾" : "▸"}</span>
       </button>
       {expanded && (
-        <div
-          className="dir-filter-panel"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className="dir-filter-panel" onClick={(e) => e.stopPropagation()}>
           <div className="dir-filter-presets">
             {PRESETS.map((p, i) => (
               <button

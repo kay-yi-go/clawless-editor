@@ -22,15 +22,60 @@ export type Theme = {
 };
 
 export const PALETTES: Array<{ name: string } & Vivid> = [
-  { name: "Conveyd", primary: "#6a5acd", accent: "#1e90ff", highlight: "#ff66b3" },
-  { name: "Sunset", primary: "#ee4266", accent: "#ff6b35", highlight: "#ffd23f" },
-  { name: "Ocean", primary: "#0077b6", accent: "#00b4d8", highlight: "#90e0ef" },
-  { name: "Forest", primary: "#2d6a4f", accent: "#52b788", highlight: "#95d5b2" },
-  { name: "Cyberpunk", primary: "#ff006e", accent: "#fb5607", highlight: "#ffbe0b" },
-  { name: "Mauve", primary: "#5e548e", accent: "#9f86c0", highlight: "#be95c4" },
-  { name: "Spring", primary: "#ec4899", accent: "#34d399", highlight: "#fbbf24" },
-  { name: "Slate", primary: "#475569", accent: "#0ea5e9", highlight: "#f43f5e" },
-  { name: "Berry", primary: "#7c3aed", accent: "#db2777", highlight: "#f97316" },
+  {
+    name: "Conveyd",
+    primary: "#6a5acd",
+    accent: "#1e90ff",
+    highlight: "#ff66b3",
+  },
+  {
+    name: "Sunset",
+    primary: "#ee4266",
+    accent: "#ff6b35",
+    highlight: "#ffd23f",
+  },
+  {
+    name: "Ocean",
+    primary: "#0077b6",
+    accent: "#00b4d8",
+    highlight: "#90e0ef",
+  },
+  {
+    name: "Forest",
+    primary: "#2d6a4f",
+    accent: "#52b788",
+    highlight: "#95d5b2",
+  },
+  {
+    name: "Cyberpunk",
+    primary: "#ff006e",
+    accent: "#fb5607",
+    highlight: "#ffbe0b",
+  },
+  {
+    name: "Mauve",
+    primary: "#5e548e",
+    accent: "#9f86c0",
+    highlight: "#be95c4",
+  },
+  {
+    name: "Spring",
+    primary: "#ec4899",
+    accent: "#34d399",
+    highlight: "#fbbf24",
+  },
+  {
+    name: "Slate",
+    primary: "#475569",
+    accent: "#0ea5e9",
+    highlight: "#f43f5e",
+  },
+  {
+    name: "Berry",
+    primary: "#7c3aed",
+    accent: "#db2777",
+    highlight: "#f97316",
+  },
   { name: "Mint", primary: "#0d9488", accent: "#10b981", highlight: "#84cc16" },
 ];
 
@@ -51,7 +96,7 @@ export const FONT_PRESETS: Array<{ name: string; value: string }> = [
   },
   { name: "JetBrains Mono", value: '"JetBrains Mono", monospace' },
   { name: "Fira Code", value: '"Fira Code", monospace' },
-  { name: "Inter", value: 'Inter, sans-serif' },
+  { name: "Inter", value: "Inter, sans-serif" },
   { name: "IBM Plex Mono", value: '"IBM Plex Mono", monospace' },
   { name: "Source Code Pro", value: '"Source Code Pro", monospace' },
 ];
@@ -76,9 +121,13 @@ const THEME_KEY = "clawless.theme";
 
 function hexToRgb(hex: string): [number, number, number] {
   const h = hex.replace("#", "");
-  const v = h.length === 3
-    ? h.split("").map((c) => c + c).join("")
-    : h;
+  const v =
+    h.length === 3
+      ? h
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : h;
   return [
     parseInt(v.slice(0, 2), 16),
     parseInt(v.slice(2, 4), 16),
@@ -131,11 +180,7 @@ function hslToRgb(h: number, s: number, l: number): [number, number, number] {
     if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
     return p;
   };
-  return [
-    hue2rgb(h + 1 / 3) * 255,
-    hue2rgb(h) * 255,
-    hue2rgb(h - 1 / 3) * 255,
-  ];
+  return [hue2rgb(h + 1 / 3) * 255, hue2rgb(h) * 255, hue2rgb(h - 1 / 3) * 255];
 }
 
 export function pastelOf(vivid: string): string {
@@ -201,10 +246,7 @@ export function applyTheme(t: Theme): void {
   if (t.uiOverrides.text) root.setProperty("--color-text", t.uiOverrides.text);
   if (t.uiOverrides.bg) {
     root.setProperty("--color-bg-solid", t.uiOverrides.bg);
-    root.setProperty(
-      "--color-bg",
-      `rgba(${rgbAt(t.uiOverrides.bg)}, 0.78)`,
-    );
+    root.setProperty("--color-bg", `rgba(${rgbAt(t.uiOverrides.bg)}, 0.78)`);
   }
   if (t.uiOverrides.surface) {
     root.setProperty("--color-surface-solid", t.uiOverrides.surface);
@@ -213,11 +255,16 @@ export function applyTheme(t: Theme): void {
       `rgba(${rgbAt(t.uiOverrides.surface)}, 0.78)`,
     );
   }
-  if (t.uiOverrides.border) root.setProperty("--color-border", t.uiOverrides.border);
+  if (t.uiOverrides.border)
+    root.setProperty("--color-border", t.uiOverrides.border);
 }
 
 export function randomPalette(): Vivid {
   const list = PALETTES.filter((p) => p.name !== DEFAULT_PALETTE.name);
   const pick = list[Math.floor(Math.random() * list.length)];
-  return { primary: pick.primary, accent: pick.accent, highlight: pick.highlight };
+  return {
+    primary: pick.primary,
+    accent: pick.accent,
+    highlight: pick.highlight,
+  };
 }

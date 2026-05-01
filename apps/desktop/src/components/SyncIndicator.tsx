@@ -53,7 +53,9 @@ export default function SyncIndicator() {
     }
   }
 
-  const tooltip = report?.message ? `${LABELS[state]} — ${report.message}` : LABELS[state];
+  const tooltip = report?.message
+    ? `${LABELS[state]} — ${report.message}`
+    : LABELS[state];
 
   return (
     <button

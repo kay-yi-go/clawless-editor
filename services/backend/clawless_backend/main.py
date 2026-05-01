@@ -30,6 +30,7 @@ app.include_router(archive_router, dependencies=[Depends(require_api_key)])
 
 def run() -> None:
     import uvicorn
+
     uvicorn.run(
         "clawless_backend.main:app",
         host=settings.host,

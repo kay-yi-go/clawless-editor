@@ -17,7 +17,9 @@ export default function KeybindingsEditor({ onChanged }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadKeybindings().then(setBindings).catch((e) => setError(String(e)));
+    loadKeybindings()
+      .then(setBindings)
+      .catch((e) => setError(String(e)));
   }, []);
 
   const keysByCommand = useMemo(() => {
@@ -48,7 +50,10 @@ export default function KeybindingsEditor({ onChanged }: Props) {
         const filtered = prev.filter(
           (b) => !(b.key === key) && !(b.command === recordingFor),
         );
-        const next: Keybinding[] = [...filtered, { key, command: recordingFor! }];
+        const next: Keybinding[] = [
+          ...filtered,
+          { key, command: recordingFor! },
+        ];
         void saveKeybindings(next).then(() => onChanged());
         return next;
       });

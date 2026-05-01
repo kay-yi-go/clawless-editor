@@ -22,11 +22,15 @@ export async function triggerSync(): Promise<void> {
   await invoke("trigger_sync");
 }
 
-export function onSyncState(handler: (state: SyncState) => void): Promise<UnlistenFn> {
+export function onSyncState(
+  handler: (state: SyncState) => void,
+): Promise<UnlistenFn> {
   return listen<SyncState>("sync-state", (e) => handler(e.payload));
 }
 
-export function onSyncReport(handler: (report: SyncReport) => void): Promise<UnlistenFn> {
+export function onSyncReport(
+  handler: (report: SyncReport) => void,
+): Promise<UnlistenFn> {
   return listen<SyncReport>("sync-report", (e) => handler(e.payload));
 }
 

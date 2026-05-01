@@ -41,9 +41,7 @@ export default function FirstRun({ onDone }: Props) {
     if (!editing) return;
     const updated = { ...editing, ...patch };
     setEditing(updated);
-    setDrafts((ds) =>
-      ds.map((d) => (d.path === editing.path ? updated : d)),
-    );
+    setDrafts((ds) => ds.map((d) => (d.path === editing.path ? updated : d)));
   }
 
   function removeDraft(path: string) {
@@ -78,8 +76,8 @@ export default function FirstRun({ onDone }: Props) {
       <div className="firstrun-card">
         <h1>Welcome to Clawless</h1>
         <p>
-          Pick the folders you'll work with. You can pair each one with a
-          GitHub repo for sync, or skip and add it later.
+          Pick the folders you'll work with. You can pair each one with a GitHub
+          repo for sync, or skip and add it later.
         </p>
 
         <div className="firstrun-list">
@@ -95,7 +93,9 @@ export default function FirstRun({ onDone }: Props) {
                 <strong>{d.name}</strong>
                 <div className="firstrun-item-path">{d.path}</div>
                 {d.github_remote && (
-                  <div className="firstrun-item-remote">↗ {d.github_remote}</div>
+                  <div className="firstrun-item-remote">
+                    ↗ {d.github_remote}
+                  </div>
                 )}
               </div>
               <button
@@ -126,9 +126,7 @@ export default function FirstRun({ onDone }: Props) {
               <input
                 placeholder="https://github.com/you/your-vault.git"
                 value={editing.github_remote}
-                onChange={(e) =>
-                  updateDraft({ github_remote: e.target.value })
-                }
+                onChange={(e) => updateDraft({ github_remote: e.target.value })}
               />
             </label>
             <label>
@@ -142,8 +140,8 @@ export default function FirstRun({ onDone }: Props) {
             </label>
             <p className="firstrun-note">
               The PAT is stored locally in this app's config. Sync currently
-              uses the system git CLI's credential manager — set it up there
-              for actual auth.
+              uses the system git CLI's credential manager — set it up there for
+              actual auth.
             </p>
           </div>
         )}

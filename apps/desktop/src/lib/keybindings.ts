@@ -43,7 +43,12 @@ export async function saveKeybindings(bindings: Keybinding[]): Promise<void> {
 }
 
 export function eventToKey(e: KeyboardEvent): string | null {
-  if (e.key === "Control" || e.key === "Shift" || e.key === "Alt" || e.key === "Meta") {
+  if (
+    e.key === "Control" ||
+    e.key === "Shift" ||
+    e.key === "Alt" ||
+    e.key === "Meta"
+  ) {
     return null;
   }
   const parts: string[] = [];
