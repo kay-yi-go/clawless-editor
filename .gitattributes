@@ -1,0 +1,45 @@
+# Default: normalize line endings to LF in the repo, auto-detect text vs binary
+* text=auto eol=lf
+
+# Source — explicit LF
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.rs text eol=lf
+*.toml text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Lockfiles
+pnpm-lock.yaml text eol=lf
+Cargo.lock text eol=lf
+uv.lock text eol=lf
+
+# PowerShell prefers CRLF
+*.ps1 text eol=crlf
+
+# Binaries — no text conversion
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.icns binary
+*.svg text eol=lf
+*.dmg binary
+*.exe binary
+*.dll binary
+*.app binary
+*.deb binary
+*.rpm binary
+*.msi binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary

@@ -1,0 +1,30 @@
+[project]
+name = "clawless-backend"
+version = "0.1.0"
+description = "Backend for Clawless: LLM, git operations for mobile, daily log, sync state"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "anthropic>=0.40",
+  "pydantic>=2.0",
+  "pydantic-settings>=2.0",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0",
+  "httpx>=0.25",
+  "ruff>=0.5",
+]
+
+[project.scripts]
+clawless-backend = "clawless_backend.main:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["clawless_backend"]
