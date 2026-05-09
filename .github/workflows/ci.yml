@@ -43,6 +43,9 @@ jobs:
       - name: ESLint
         run: pnpm lint
 
+      - name: Vitest
+        run: pnpm test
+
       - name: TypeScript + Vite build
         run: pnpm build
 
@@ -84,14 +87,5 @@ jobs:
       - name: Ruff (format check)
         run: uv run ruff format --check .
 
-      - name: Syntax check
-        run: |
-          uv run python -m py_compile \
-            clawless_backend/__init__.py \
-            clawless_backend/main.py \
-            clawless_backend/config.py \
-            clawless_backend/auth.py \
-            clawless_backend/llm.py \
-            clawless_backend/daily.py \
-            clawless_backend/rename.py \
-            clawless_backend/archive.py
+      - name: Pytest
+        run: uv run pytest
