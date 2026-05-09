@@ -43,10 +43,15 @@ describe("parseSearch", () => {
     expect(r.folder).toBe("Conveyd");
   });
 
-  it("strips operator from remaining text", () => {
+  it("strips operator from remaining text and collapses whitespace", () => {
     const r = parseSearch("standup folder:Conveyd notes");
     expect(r.folder).toBe("Conveyd");
-    expect(r.text).toBe("standup  notes");
+    expect(r.text).toBe("standup notes");
+  });
+
+  it("collapses runs of whitespace from leading/trailing operators", () => {
+    const r = parseSearch("  folder:Conveyd  modified:>7d  query  here  ");
+    expect(r.text).toBe("query here");
   });
 
   it("parses absolute date for before/after", () => {

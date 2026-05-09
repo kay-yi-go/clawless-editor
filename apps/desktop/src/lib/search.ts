@@ -97,7 +97,7 @@ export function parseSearch(input: string): ParsedSearch {
       else result.createdBefore = d;
     }
   }
-  result.text = stripped.trim().toLowerCase();
+  result.text = stripped.replace(/\s+/g, " ").trim().toLowerCase();
   return result;
 }
 
